@@ -4,7 +4,7 @@ const AdminBro = require('admin-bro')
 /** @typedef {import('admin-bro').default} AdminBro */
 
 const path = require('path')
-const formidableMiddleware = require('express-formidable')
+// const formidableMiddleware = require('express-formidable')
 
 const pkg = require('./package.json')
 
@@ -45,7 +45,7 @@ const buildRouter = (admin, predefinedRouter, formidableOptions) => {
   const { routes, assets } = AdminBro.Router
   const router = predefinedRouter || express.Router()
 
-  router.use(formidableMiddleware(formidableOptions))
+  // router.use(formidableMiddleware(formidableOptions))
 
   routes.forEach((route) => {
     // we have to change routes defined in AdminBro from {recordId} to :recordId
@@ -157,7 +157,7 @@ const buildAuthenticatedRouter = (
     secret: auth.cookiePassword,
     name: auth.cookieName || 'adminbro',
   }))
-  router.use(formidableMiddleware(formidableOptions))
+  // router.use(formidableMiddleware(formidableOptions))
 
   const { rootPath } = admin.options
   let { loginPath, logoutPath } = admin.options
@@ -173,7 +173,7 @@ const buildAuthenticatedRouter = (
   })
 
   router.post(loginPath, async (req, res, next) => {
-    const { email, password } = req.fields
+    const { email, password } = req.body // fields
     const adminUser = await auth.authenticate(email, password)
     if (adminUser) {
       req.session.adminUser = adminUser
